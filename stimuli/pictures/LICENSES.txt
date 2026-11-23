@@ -1,0 +1,3 @@
+One line per picture: file name | source URL or "own drawing" | license | author
+
+01_rain_house.svg | placeholder | - | -

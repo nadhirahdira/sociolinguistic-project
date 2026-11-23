@@ -5,8 +5,8 @@ window.CONFIG = {
   // From Supabase: Project Settings → API (or "Connect" button).
   // Leave empty to run in DEMO MODE: nothing is uploaded, and the last
   // page offers the recordings as downloads (useful for local testing).
-  SUPABASE_URL: "",   // e.g. "https://abcdefghijklmnop.supabase.co"
-  SUPABASE_KEY: "",   // the publishable / anon key (public by design — never the secret/service_role key)
+  SUPABASE_URL: "https://wykbjzqbhkvbeiqziotv.supabase.co",
+  SUPABASE_KEY: "sb_publishable_AGo2poNTexm80vVW_0IEQA_oRCUacwT",   // public by design — never put the secret/service_role key here
 
   BUCKET: "recordings",
   TABLE: "sessions",

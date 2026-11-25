@@ -75,7 +75,7 @@ window.CONTENT = {
   monologueLabel: "{N} dari {TOTAL}",
   monologueInstruction: "",   // none: the prompt is shown (or played) on its own
   pictureLabel: "Gambar {N} dari {TOTAL}",
-  pictureInstruction: "Ceritakan dalam bahasa Belitong apa yang kamu lihat di gambar ini.",
+  pictureInstruction: "Nok ape nok mikak liat de gambar ini?",
 
   // ---------------------------------------------------------------
   // MONOLOGUE PROMPTS — identical for everyone, played in this order.
@@ -245,7 +245,6 @@ window.CONTENT = {
   // ---------------------------------------------------------------
   finish: {
     title: "Terima kasih!",
-    codeNote: "Ini kode partisipan Anda. Mohon simpan (misalnya dengan tangkapan layar) dan kirimkan ke peneliti.",
     uploading: "Rekaman sedang dikirim… Mohon jangan tinggalkan halaman ini.",
     done: "Semua rekaman dan jawaban sudah tersimpan. Anda boleh menutup halaman ini.",
     failed: "Beberapa file belum terkirim. Periksa koneksi internet, lalu tekan “Kirim ulang”.",

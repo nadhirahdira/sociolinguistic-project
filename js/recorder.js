@@ -94,9 +94,11 @@ window.Recorder = (() => {
 
   // Prompt playback through the same (already unlocked) audio context, so it
   // can start automatically without another tap, including on iPhone.
+  // The player supports pause/resume and reports its position.
   const promptCache = new Map();
-  let promptSrc = null;
-  async function playPrompt(url) {
+  let currentPlayer = null;
+
+  async function loadPrompt(url) {
     await init();
     let buf = promptCache.get(url);
     if (!buf) {
@@ -107,19 +109,43 @@ window.Recorder = (() => {
       promptCache.set(url, buf);
     }
     stopPrompt();
-    return new Promise((resolve) => {
-      const src = ctx.createBufferSource();
-      src.buffer = buf;
-      src.connect(ctx.destination);
-      src.onended = () => { if (promptSrc === src) promptSrc = null; resolve(); };
-      promptSrc = src;
-      src.start();
-    });
+    let src = null, startedAt = 0, offset = 0, playing = false;
+    const player = {
+      duration: buf.duration,
+      onended: null,
+      isPlaying: () => playing,
+      position: () => (playing ? Math.min(buf.duration, ctx.currentTime - startedAt) : offset),
+      play() {
+        if (playing) return;
+        if (ctx.state !== "running") ctx.resume();
+        if (offset >= buf.duration - 0.05) offset = 0;   // finished -> play again from the start
+        const me = ctx.createBufferSource();
+        me.buffer = buf;
+        me.connect(ctx.destination);
+        me.onended = () => {
+          if (src !== me) return;                          // stopped by pause, not finished
+          src = null; playing = false; offset = buf.duration;
+          if (player.onended) player.onended();
+        };
+        src = me;
+        startedAt = ctx.currentTime - offset;
+        me.start(0, offset);
+        playing = true;
+      },
+      pause() {
+        if (!playing) return;
+        offset = Math.min(buf.duration, ctx.currentTime - startedAt);
+        playing = false;
+        const s = src; src = null;
+        try { s.stop(); } catch (e) { /* already stopped */ }
+      },
+      stop() { player.pause(); offset = 0; },
+    };
+    currentPlayer = player;
+    return player;
   }
   function stopPrompt() {
-    if (!promptSrc) return;
-    try { promptSrc.onended = null; promptSrc.stop(); } catch (e) { /* already stopped */ }
-    promptSrc = null;
+    if (currentPlayer) { currentPlayer.onended = null; currentPlayer.stop(); currentPlayer = null; }
   }
 
   async function resample(data, fromRate, toRate) {
@@ -166,5 +192,5 @@ window.Recorder = (() => {
     };
   }
 
-  return { init, start, stop, cancel, info, isReady, playPrompt, stopPrompt };
+  return { init, start, stop, cancel, info, isReady, loadPrompt, stopPrompt };
 })();

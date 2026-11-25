@@ -163,7 +163,7 @@ class RecordTrialPlugin {
   constructor(jsPsych) { this.jsPsych = jsPsych; }
 
   trial(el, trial) {
-    const st = { plays: 0, promptError: false, hidden: false, retries: 0, startedAt: null };
+    const st = { plays: 0, pauses: 0, promptError: false, hidden: false, retries: 0, startedAt: null };
     let timer = null;
 
     const onVis = () => { if (document.hidden && st.startedAt) st.hidden = true; };
@@ -182,37 +182,64 @@ class RecordTrialPlugin {
         </div>`;
     };
 
-    // --- prompt audio: plays automatically when the screen opens ---
-    // If the browser blocks autoplay, a play button appears; if that fails
-    // too, the written prompt is shown instead.
-    const play = async () => {
-      frame(`<p class="status">▶ Sedang diputar…</p>`);
-      try {
-        await Recorder.playPrompt(trial.prompt_audio);
-        st.plays++;
-        ready();
-      } catch (err) {
-        console.warn("Prompt playback failed", err);
-        if (st.manualTried) { st.promptError = true; ready(); return; }
-        st.manualTried = true;
-        frame(`<button class="jspsych-btn primary" id="rt-play">▶ Dengarkan pertanyaan</button>`);
-        el.querySelector("#rt-play").onclick = play;
+    // --- prompt audio: plays automatically, with play/pause and a progress bar ---
+    // "Mulai merekam" appears once the prompt has been heard to the end.
+    // If the audio can't be loaded, the written prompt is used instead.
+    let player = null, raf = null;
+    const tick = () => {
+      if (!player) return;
+      const pos = player.position();
+      const fill = el.querySelector("#pp-fill"), time = el.querySelector("#pp-time"), btn = el.querySelector("#pp-btn");
+      if (fill) fill.style.width = `${(pos / player.duration) * 100}%`;
+      if (time) time.textContent = `${fmtTime(pos)} / ${fmtTime(player.duration)}`;
+      if (btn) {
+        btn.textContent = player.isPlaying() ? "❚❚" : "▶";
+        btn.setAttribute("aria-label", player.isPlaying() ? "Jeda" : "Putar");
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    const showStart = () => {
+      const slot = el.querySelector("#rt-after");
+      if (slot && !slot.innerHTML) {
+        slot.innerHTML = `<button class="jspsych-btn primary" id="rt-start">● Mulai merekam</button>`;
+        el.querySelector("#rt-start").onclick = start;
       }
     };
+    const listen = async () => {
+      frame(`<p class="status">Memuat pertanyaan…</p>`);
+      try {
+        player = await Recorder.loadPrompt(trial.prompt_audio);
+      } catch (err) {
+        console.warn("Prompt audio failed to load", err);
+        st.promptError = true;
+        ready();
+        return;
+      }
+      frame(`
+        <div class="player">
+          <button class="player-btn" id="pp-btn" aria-label="Jeda">❚❚</button>
+          <div class="player-track"><div class="player-fill" id="pp-fill"></div></div>
+          <span class="player-time" id="pp-time">0:00 / ${fmtTime(player.duration)}</span>
+        </div>
+        <div id="rt-after"></div>`);
+      player.onended = () => { st.plays++; showStart(); };
+      el.querySelector("#pp-btn").onclick = () => {
+        if (player.isPlaying()) { player.pause(); st.pauses++; } else player.play();
+      };
+      player.play();
+      raf = requestAnimationFrame(tick);
+    };
+    const stopPlayer = () => { if (raf) cancelAnimationFrame(raf); raf = null; Recorder.stopPrompt(); player = null; };
 
-    // --- ready to record ---
+    // --- ready to record (no audio, or audio failed) ---
     const ready = () => {
-      const replay = trial.prompt_audio && !st.promptError
-        ? `<button class="jspsych-btn" id="rt-replay">↻ Putar ulang</button>` : "";
-      frame(`<div class="btn-row">${replay}<button class="jspsych-btn primary" id="rt-start">● Mulai merekam</button></div>`);
-      const r = el.querySelector("#rt-replay");
-      if (r) r.onclick = play;
+      frame(`<button class="jspsych-btn primary" id="rt-start">● Mulai merekam</button>`);
       el.querySelector("#rt-start").onclick = start;
     };
 
     // --- recording ---
     const start = async () => {
-      Recorder.stopPrompt();
+      stopPlayer();
       try {
         await Recorder.start(levelMeterCb);
       } catch (err) {
@@ -277,6 +304,7 @@ class RecordTrialPlugin {
         sample_rate: res.sampleRate,
         auto_stopped: auto,
         prompt_plays: st.plays,
+        prompt_pauses: st.pauses,
         prompt_audio_error: st.promptError,
         page_hidden_during_recording: st.hidden,
         empty_retakes: st.retries,
@@ -284,7 +312,7 @@ class RecordTrialPlugin {
       });
     };
 
-    if (trial.prompt_audio) play(); else ready();
+    if (trial.prompt_audio) listen(); else ready();
   }
 }
 
@@ -328,8 +356,6 @@ class FinishPlugin {
       el.innerHTML = `
         <div class="panel">
           <h1>${T.title}</h1>
-          <p>${T.codeNote}</p>
-          <p class="big-code">${trial.code}</p>
           ${status}
           ${downloads}
         </div>`;

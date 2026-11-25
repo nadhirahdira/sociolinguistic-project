@@ -189,7 +189,7 @@
     const c = ["c_orang_belitung", "c_bm_identity", "c_children_bm"].map((k) => questionnaire[k]).filter((v) => typeof v === "number");
     const recordings = jsPsych.data.get().filter([{ section: "monologue" }, { section: "picture" }]).values().map((t) => ({
       filename: t.filename, task: t.task, item_id: t.item_id, item_number: t.item_number,
-      duration_s: t.duration_s, auto_stopped: t.auto_stopped, prompt_plays: t.prompt_plays,
+      duration_s: t.duration_s, auto_stopped: t.auto_stopped, prompt_plays: t.prompt_plays, prompt_pauses: t.prompt_pauses,
       prompt_audio_error: t.prompt_audio_error, page_hidden_during_recording: t.page_hidden_during_recording,
       empty_retakes: t.empty_retakes, recording_started_at: t.recording_started_at,
     }));

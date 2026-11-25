@@ -35,6 +35,8 @@ window.CONTENT = {
     Sociolinguistics di KAIST.</p>
     <p><b>Apa yang akan kamu lakukan.</b> Berbicara mengenai beberapa topik pilihan,
     mendeskripsikan gambar, dan mengisi kuesioner (20-30 menit).</p>
+    <p><b>Kompensasi.</b> Partisipan yang menyelesaikan sesi akan menerima Rp25.000 melalui GoPay.
+    Nomor HP diminta di halaman terakhir dan hanya digunakan untuk mengirim kompensasi.</p>
     <p><b>Penyimpanan.</b> Data hanya digunakan untuk proyek ini dan dihapus setelah penilaian
     (31 Desember 2026).</p>
     <p><b>Kerahasiaan.</b> Nama partisipan tidak akan muncul di laporan, dan rekaman percakapan

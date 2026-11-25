@@ -172,20 +172,24 @@ class RecordTrialPlugin {
     const showText = () => trial.prompt_text && (CONTENT.showPromptText || !trial.prompt_audio || st.promptError);
 
     const frame = (controls) => {
+      const slot = el.querySelector("#rt-controls");
+      if (slot) { slot.innerHTML = controls; return; }
       el.innerHTML = `
         <div class="panel task">
           <p class="task-label">${trial.label}</p>
           ${trial.image ? `<img class="task-image" src="${trial.image}" alt="${trial.image_alt}">` : ""}
-          ${showText() ? `<div class="prompt-text">${trial.prompt_text}</div>` : ""}
+          <div id="rt-text">${showText() ? `<div class="prompt-text">${trial.prompt_text}</div>` : ""}</div>
           ${trial.instruction ? `<p class="task-instruction">${trial.instruction}</p>` : ""}
+          <div id="rt-player"></div>
           <div id="rt-controls">${controls}</div>
         </div>`;
     };
 
     // --- prompt audio: plays automatically, with play/pause and a progress bar ---
-    // "Mulai merekam" is available right away (the written prompt is on screen);
-    // starting to record stops the prompt audio. If the audio can't be loaded,
-    // the written prompt is used on its own.
+    // "Mulai merekam" is available right away. Starting to record pauses the
+    // question audio; the player stays visible but is locked while recording,
+    // so the question audio can't end up in the participant's recording.
+    // If the audio can't be loaded, the written prompt is used on its own.
     let player = null, raf = null;
     const tick = () => {
       if (!player) return;
@@ -194,40 +198,36 @@ class RecordTrialPlugin {
       if (fill) fill.style.width = `${(pos / player.duration) * 100}%`;
       if (time) time.textContent = `${fmtTime(pos)} / ${fmtTime(player.duration)}`;
       if (btn) {
-        btn.textContent = player.isPlaying() ? "❚❚" : "▶";
+        btn.textContent = player.isPlaying() ? "\u275a\u275a" : "\u25b6";
         btn.setAttribute("aria-label", player.isPlaying() ? "Jeda" : "Putar");
+        btn.disabled = !!st.recording;
       }
       raf = requestAnimationFrame(tick);
     };
-    const showStart = () => {
-      const slot = el.querySelector("#rt-after");
-      if (slot && !slot.innerHTML) {
-        slot.innerHTML = `<button class="jspsych-btn primary" id="rt-start">● Mulai merekam</button>`;
-        el.querySelector("#rt-start").onclick = start;
-      }
-    };
     const listen = async () => {
-      frame(`<p class="status">Memuat pertanyaan…</p>`);
+      frame(`<p class="status">Memuat pertanyaan\u2026</p>`);
       try {
         player = await Recorder.loadPrompt(trial.prompt_audio);
       } catch (err) {
         console.warn("Prompt audio failed to load", err);
         st.promptError = true;
+        const t = el.querySelector("#rt-text");
+        if (t && trial.prompt_text) t.innerHTML = `<div class="prompt-text">${trial.prompt_text}</div>`;
         ready();
         return;
       }
-      frame(`
+      el.querySelector("#rt-player").innerHTML = `
         <div class="player">
-          <button class="player-btn" id="pp-btn" aria-label="Jeda">❚❚</button>
+          <button class="player-btn" id="pp-btn" aria-label="Jeda">\u275a\u275a</button>
           <div class="player-track"><div class="player-fill" id="pp-fill"></div></div>
           <span class="player-time" id="pp-time">0:00 / ${fmtTime(player.duration)}</span>
-        </div>
-        <div id="rt-after"></div>`);
+        </div>`;
       player.onended = () => { st.plays++; };
-      showStart();
       el.querySelector("#pp-btn").onclick = () => {
+        if (st.recording) return;
         if (player.isPlaying()) { player.pause(); st.pauses++; } else player.play();
       };
+      ready();
       player.play();
       raf = requestAnimationFrame(tick);
     };
@@ -241,10 +241,12 @@ class RecordTrialPlugin {
 
     // --- recording ---
     const start = async () => {
-      stopPlayer();
+      if (player) player.pause();
+      st.recording = true;
       try {
         await Recorder.start(levelMeterCb);
       } catch (err) {
+        st.recording = false;
         frame(`${micErrorHtml(err)}<button class="jspsych-btn primary" id="rt-start">Coba lagi</button>`);
         el.querySelector("#rt-start").onclick = start;
         return;
@@ -289,12 +291,13 @@ class RecordTrialPlugin {
       const elapsed = (performance.now() - st.t0) / 1000;
       if (elapsed >= 1 && res.duration < Math.min(1, elapsed / 2)) {
         // Technical failure (no audio captured) — the only case where a retake is allowed.
-        stopping = false; st.retries++; st.startedAt = null;
+        stopping = false; st.retries++; st.startedAt = null; st.recording = false;
         frame(`<p class="error">Rekaman kosong — mikrofon tidak menangkap suara. Pastikan mikrofon tidak dipakai aplikasi lain, lalu coba lagi.</p>
                <button class="jspsych-btn primary" id="rt-start">● Coba lagi</button>`);
         el.querySelector("#rt-start").onclick = start;
         return;
       }
+      stopPlayer();
       Uploader.queueFile(trial.path, res.blob, trial.filename);
       document.removeEventListener("visibilitychange", onVis);
       this.jsPsych.finishTrial({

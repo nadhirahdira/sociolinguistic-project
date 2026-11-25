@@ -95,7 +95,8 @@ p { margin: .6em 0; }
 .prompt-text { background: var(--purple-tint); border-left: 4px solid var(--accent); padding: 12px 14px; border-radius: 6px; margin: 10px 0; }
 .player { display: flex; align-items: center; gap: 12px; background: var(--purple-tint); border-radius: 10px; padding: 10px 14px; margin: 10px 0; }
 .player-btn { width: 44px; height: 44px; flex: none; border-radius: 50%; border: none; background: var(--purple); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
-.player-btn:hover { background: var(--purple-dark); }
+.player-btn:hover:not(:disabled) { background: var(--purple-dark); }
+.player-btn:disabled { opacity: .45; cursor: not-allowed; }
 .player-track { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
 .player-fill { height: 100%; width: 0; background: var(--gold); }
 .player-time { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9em; white-space: nowrap; }

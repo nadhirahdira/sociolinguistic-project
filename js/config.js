@@ -21,5 +21,5 @@ window.CONFIG = {
 
   // Bump this whenever prompts/pictures/questions change, so sessions
   // recorded with different materials can be told apart.
-  STUDY_VERSION: "0.7-record-anytime",
+  STUDY_VERSION: "0.8-player-stays",
 };

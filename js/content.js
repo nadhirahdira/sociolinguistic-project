@@ -149,11 +149,6 @@ window.CONTENT = {
           { value: "belitung_timur", label: "Belitung Timur" },
           { value: "other", label: "Lainnya" },
         ]},
-        { name: "a_town", type: "text", label: "Nama kota/desa tempat Anda dibesarkan", required: true },
-        { name: "a_town_type", type: "radio", label: "Tempat itu lebih tepat disebut", required: true, options: [
-          { value: "town", label: "Kota" },
-          { value: "village", label: "Desa / kampung" },
-        ]},
         { name: "a_study_place", type: "text", label: "Kota tempat kuliah/tinggal sekarang <span class='opt'>(kosongkan jika tidak berlaku)</span>", required: false },
         { name: "a_years_outside", type: "number", label: "Sudah berapa tahun kamu tinggal di luar Belitung? <span class='opt'>(isi 0 jika tidak pernah)</span>", required: true, min: 0, max: 80, step: 0.5 },
       ],

@@ -1,7 +1,7 @@
-One line per picture: file name | source URL or "own drawing" | license | author
+One line per picture: file name | source | license | author
 
-01_sweet_bread    | placeholder | - | -
-02_green_dress    | placeholder | - | -
-03_school_fight   | placeholder | - | -
-04_beach          | placeholder | - | -
-05_seafood_meal   | placeholder | - | -
+01_sweet_bread.jpg    | https://pin.it/4IqOLkBrR (Pinterest) | unknown, check original | unknown
+02_green_dress.jpg    | https://pin.it/78doaf0SP (Pinterest) | unknown, check original | unknown
+03_school_fight.jpg   | https://pin.it/5G3U0KZtm (Pinterest) | unknown, check original | unknown
+04_beach.jpg          | https://pin.it/1UQZuNfaL (Pinterest) | unknown, check original | unknown
+05_seafood_meal.jpg   | https://pin.it/2cdRrXgux (Pinterest) | unknown, check original | unknown

@@ -169,7 +169,7 @@ class RecordTrialPlugin {
     const onVis = () => { if (document.hidden && st.startedAt) st.hidden = true; };
     document.addEventListener("visibilitychange", onVis);
 
-    const showText = () => trial.prompt_text && (!trial.prompt_audio || st.promptError);
+    const showText = () => trial.prompt_text && (CONTENT.showPromptText || !trial.prompt_audio || st.promptError);
 
     const frame = (controls) => {
       el.innerHTML = `

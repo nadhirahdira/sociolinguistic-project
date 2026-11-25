@@ -81,23 +81,25 @@ window.CONTENT = {
   // MONOLOGUE PROMPTS — identical for everyone, played in this order.
   //   audio: path to the recorded BM prompt, e.g. "stimuli/prompts/prompt_01.mp3".
   //          It plays automatically when the screen opens (replay button before recording).
-  //          While audio is null, the Belitung text (`text`) is shown instead.
+  //   text: Belitung Malay prompt, shown on screen (see showPromptText).
   //   text_id: Indonesian version, for reference only (not shown).
   //   enabled: set false to drop a prompt.
+  showPromptText: true,   // true = show the written prompt together with the audio
+
   prompts: [
-    { id: "favorite_dish", enabled: true, audio: null,
-      text: "Cube ceriteek makanan nok nyaman menurut mikak. Ngape mikak rajin kan makanan itu? Sebile terakhir makan e? Isak ke nyuba masak e sendirik?",
+    { id: "favorite_dish", enabled: true, audio: "stimuli/prompts/prompt_01.m4a",
+      text: "Cube ceriteek makanen nok nyaman menurut mikak. Ngape mikak rajin kan makanen itu? Sebile terakhir makan e? Isak ke nyuba masak e sendirik?",
       text_id: "Ceritakan tentang salah satu makanan favoritmu, seperti alasan kamu menyukai makanan itu dan momen terakhir kamu makan masakan itu. Apa kamu pernah memasak makanan itu sendiri?" },
-    { id: "rainy_sunny", enabled: true, audio: null,
+    { id: "rainy_sunny", enabled: true, audio: "stimuli/prompts/prompt_02.m4a",
       text: "Mikak lebe rajin mun pas ari ujan ape ari terik? Ngape? Mikak biase e ngape mun ari kitu?",
       text_id: "Apakah kamu lebih menyukai hari di saat hujan turun atau hari di mana matahari bersinar terang? Mengapa? Apa yang biasanya kamu lakukan di hari-hari tersebut?" },
-    { id: "beach", enabled: true, audio: null,
+    { id: "beach", enabled: true, audio: "stimuli/prompts/prompt_03.m4a",
       text: "Cube ceriteek pengalamen mikak de pantai nok ade de Belitong. Sebile mikak kesitu? Pantai ape itu name e? Nok ape mikak gaween de situ? Mikak pegi e kan kawan ape kan keluarge?",
       text_id: "Ceritakan satu hari saat kalian berada di salah satu pantai di Belitung. Kapan dan di mana pantai itu? Apa yang kamu lakukan di sana? Dengan siapa saja kamu pergi ke sana?" },
-    { id: "place_recommendation", enabled: true, audio: null,
+    { id: "place_recommendation", enabled: true, audio: "stimuli/prompts/prompt_04.m4a",
       text: "Tempat mane bang Belitong ne nok mikak nak kenalek kan urang-urang dari luar Belitong, selain pantai-pantai? Ape nok bagus e dari tempat itu? Sebile mikak terakhir kesitu? Mun mikak ke tempat itu pulak, ape nok nak mikak gaween de situ?",
       text_id: "Ceritakan salah satu tempat di Belitung, selain pantai, yang kamu pasti akan rekomendasikan kepada pengunjung dari luar Belitung. Apa yang spesial dari tempat itu? Kapan terakhir kali kamu mengunjungi tempat itu? Jika kamu mengunjungi tempat itu lagi, apa yang ingin kamu lakukan di sana?" },
-    { id: "school_subject", enabled: true, audio: null,
+    { id: "school_subject", enabled: true, audio: "stimuli/prompts/prompt_05.m4a",
       text: "Pas tika SMA duluk e, pelajaren ape nok paling mikak rajinek? Ngape mikak rajin itu? Cube ceriteek ape sajak nok mikak ingat dari pelajaren itu. Mun pelajaren nok mikak ndak rajin e, ade ke? Ngape mikak nda rajin kan pelajaren itu?",
       text_id: "Apa mata pelajaran favorit kalian semasa SMA? Ceritakan apapun berkaitan dengan mata pelajaran tersebut. Bagaimana dengan mata pelajaran yang paling kalian tidak senangi? Mengapa?" },
   ],
@@ -107,11 +109,11 @@ window.CONTENT = {
   // Real pictures must contain no written words and no identifiable faces.
   // Note each image's license in stimuli/pictures/LICENSES.txt.
   pictures: [
-    { id: "sweet_bread",   src: "stimuli/pictures/01_sweet_bread.svg",   alt: "" },
-    { id: "green_dress",   src: "stimuli/pictures/02_green_dress.svg",   alt: "" },
-    { id: "school_fight",  src: "stimuli/pictures/03_school_fight.svg",  alt: "" },
-    { id: "beach",         src: "stimuli/pictures/04_beach.svg",         alt: "" },
-    { id: "seafood_meal",  src: "stimuli/pictures/05_seafood_meal.svg",  alt: "" },
+    { id: "sweet_bread",   src: "stimuli/pictures/01_sweet_bread.jpg",   alt: "" },
+    { id: "green_dress",   src: "stimuli/pictures/02_green_dress.jpg",   alt: "" },
+    { id: "school_fight",  src: "stimuli/pictures/03_school_fight.jpg",  alt: "" },
+    { id: "beach",         src: "stimuli/pictures/04_beach.jpg",         alt: "" },
+    { id: "seafood_meal",  src: "stimuli/pictures/05_seafood_meal.jpg",  alt: "" },
   ],
 
   // ---------------------------------------------------------------

@@ -123,7 +123,7 @@ class MicCheckPlugin {
           <p>Apakah suaramu bisa terdengar jelas?</p>
           <div class="btn-row">
             <button class="jspsych-btn" id="mc-redo">Ulangi tes</button>
-            <button class="jspsych-btn primary" id="mc-ok">Ya, jelas — lanjut</button>
+            <button class="jspsych-btn primary" id="mc-ok">Lanjut</button>
           </div>
         </div>`;
       el.querySelector("#mc-redo").onclick = record;
@@ -164,7 +164,7 @@ class RecordTrialPlugin {
 
   trial(el, trial) {
     const st = { plays: 0, promptError: false, hidden: false, retries: 0, startedAt: null };
-    let audio = null, timer = null;
+    let timer = null;
 
     const onVis = () => { if (document.hidden && st.startedAt) st.hidden = true; };
     document.addEventListener("visibilitychange", onVis);
@@ -177,25 +177,27 @@ class RecordTrialPlugin {
           <p class="task-label">${trial.label}</p>
           ${trial.image ? `<img class="task-image" src="${trial.image}" alt="${trial.image_alt}">` : ""}
           ${showText() ? `<div class="prompt-text">${trial.prompt_text}</div>` : ""}
-          <p class="task-instruction">${trial.instruction}</p>
+          ${trial.instruction ? `<p class="task-instruction">${trial.instruction}</p>` : ""}
           <div id="rt-controls">${controls}</div>
         </div>`;
     };
 
-    // --- listen to the prompt (monologue with audio) ---
-    const listen = () => {
-      frame(`<button class="jspsych-btn primary" id="rt-play">▶ Dengarkan pertanyaan</button>`);
-      el.querySelector("#rt-play").onclick = play;
-    };
-
-    const play = () => {
-      const btn = el.querySelector("#rt-play");
-      if (btn) { btn.disabled = true; btn.textContent = "Sedang diputar…"; }
-      audio = audio || new Audio(trial.prompt_audio);
-      audio.onended = () => { st.plays++; ready(); };
-      audio.onerror = () => { st.promptError = true; ready(); };
-      audio.currentTime = 0;
-      audio.play().catch(() => { st.promptError = true; ready(); });
+    // --- prompt audio: plays automatically when the screen opens ---
+    // If the browser blocks autoplay, a play button appears; if that fails
+    // too, the written prompt is shown instead.
+    const play = async () => {
+      frame(`<p class="status">▶ Sedang diputar…</p>`);
+      try {
+        await Recorder.playPrompt(trial.prompt_audio);
+        st.plays++;
+        ready();
+      } catch (err) {
+        console.warn("Prompt playback failed", err);
+        if (st.manualTried) { st.promptError = true; ready(); return; }
+        st.manualTried = true;
+        frame(`<button class="jspsych-btn primary" id="rt-play">▶ Dengarkan pertanyaan</button>`);
+        el.querySelector("#rt-play").onclick = play;
+      }
     };
 
     // --- ready to record ---
@@ -204,13 +206,13 @@ class RecordTrialPlugin {
         ? `<button class="jspsych-btn" id="rt-replay">↻ Putar ulang</button>` : "";
       frame(`<div class="btn-row">${replay}<button class="jspsych-btn primary" id="rt-start">● Mulai merekam</button></div>`);
       const r = el.querySelector("#rt-replay");
-      if (r) r.onclick = () => { frame(`<button class="jspsych-btn primary" id="rt-play">▶</button>`); play(); };
+      if (r) r.onclick = play;
       el.querySelector("#rt-start").onclick = start;
     };
 
     // --- recording ---
     const start = async () => {
-      if (audio) audio.pause();
+      Recorder.stopPrompt();
       try {
         await Recorder.start(levelMeterCb);
       } catch (err) {
@@ -227,7 +229,7 @@ class RecordTrialPlugin {
       meterEl = el.querySelector("#rt-lvl");
       const done = el.querySelector("#rt-done");
       done.onclick = () => stop(false);
-      const t0 = performance.now();
+      const t0 = st.t0 = performance.now();
       timer = setInterval(() => {
         const s = (performance.now() - t0) / 1000;
         el.querySelector("#rt-t").textContent = fmtTime(s);
@@ -253,7 +255,10 @@ class RecordTrialPlugin {
       clearInterval(timer);
       frame(`<p class="status">Menyimpan rekaman…</p>`);
       const res = await Recorder.stop();
-      if (res.duration < 1) {
+      // Empty = at least 1 s went by but (almost) no audio arrived. A very quick
+      // stop (possible in test mode) is not an error.
+      const elapsed = (performance.now() - st.t0) / 1000;
+      if (elapsed >= 1 && res.duration < Math.min(1, elapsed / 2)) {
         // Technical failure (no audio captured) — the only case where a retake is allowed.
         stopping = false; st.retries++; st.startedAt = null;
         frame(`<p class="error">Rekaman kosong — mikrofon tidak menangkap suara. Pastikan mikrofon tidak dipakai aplikasi lain, lalu coba lagi.</p>
@@ -279,7 +284,7 @@ class RecordTrialPlugin {
       });
     };
 
-    if (trial.prompt_audio) listen(); else ready();
+    if (trial.prompt_audio) play(); else ready();
   }
 }
 

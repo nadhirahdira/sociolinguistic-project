@@ -124,7 +124,7 @@
   CONTENT.questionnaire.forEach((block) => {
     timeline.push({
       type: jsPsychSurveyHtmlForm,
-      preamble: `<div class="panel"><h2>${block.title}</h2>${block.intro ? `<p>${block.intro}</p>` : ""}</div>`,
+      preamble: `<div class="panel"><h2>${block.title}</h2>${block.intro ? `<p>${block.intro}</p>` : ""}<p class="hint">${CONTENT.questionnaireRequiredNote}</p></div>`,
       html: `<div class="panel">${block.questions.map(renderQuestion).join("")}</div>`,
       button_label: CONTENT.nextButton,
       data: { section: "questionnaire", block: block.id },
@@ -139,7 +139,8 @@
   });
 
   function renderQuestion(q) {
-    const req = q.required ? "required" : "";
+    // Test runs (?mode=test) can skip questions; the * still shows which are required.
+    const req = q.required && mode !== "test" ? "required" : "";
     const id = (v) => `${q.name}__${v}`;
     let field = "";
     if (q.type === "radio" || q.type === "likert") {
@@ -157,7 +158,7 @@
     } else {
       field = `<input type="text" name="${q.name}" autocomplete="off" ${req}>`;
     }
-    return `<fieldset class="question"><legend>${q.label}</legend>${field}</fieldset>`;
+    return `<fieldset class="question"><legend>${q.label}${q.required ? ' <span class="req" aria-hidden="true">*</span>' : ""}</legend>${field}</fieldset>`;
   }
 
   function collectQuestionnaire() {

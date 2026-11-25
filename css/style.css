@@ -106,6 +106,7 @@ audio { width: 100%; margin: 10px 0; }
 .consent input { width: 22px; height: 22px; margin-top: 2px; flex: none; }
 fieldset.question { border: none; padding: 0; margin: 0 0 22px; }
 fieldset.question legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
+.req { color: #c62828; font-weight: 700; }
 .opt { font-weight: 400; color: var(--muted); font-size: .92em; }
 .options label {
   display: flex; gap: 10px; align-items: center;

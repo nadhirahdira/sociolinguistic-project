@@ -15,7 +15,7 @@ window.CONTENT = {
   // ---------------------------------------------------------------
   welcome: `
     <h1>Studi Sosiolinguistik tentang Bahasa Belitong</h1>
-    <p>Terima kasih atas partisipasinya! Di sesi ini, kamu akan diminta untuk berbicara
+    <p>Terima kasih atas partisipasinya! Di studi ini, kamu akan diminta untuk berbicara
     mengenai beberapa topik pilihan, mendeskripsikan beberapa gambar, lalu mengisi kuesioner singkat.</p>
     <ul class="checklist">
       <li><b>Waktu:</b> 20-30 menit</li>
@@ -55,14 +55,14 @@ window.CONTENT = {
       <li>Jangan menyebut nama lengkap siapa pun.</li>
       <li>Jangan memuat ulang atau menutup halaman. Usahakan agar layar tetap menyala.</li>
     </ul>
-    <h3>Bagian 1: Bercerita</h3>
+    <h3>Sesi 1: Pengalaman Pribadi</h3>
     <p>Kamu akan mendengar beberapa pertanyaan dalam bahasa Belitung. Setelah setiap
     pertanyaan, mulailah menjawab selama 2–3 menit dalam bahasa Belitong, seperti sedang
     berbincang dengan teman dari Belitung. Rekaman akan berhenti secara otomatis setelah 3 menit.</p>`,
   instructionsButton: "Saya mengerti, mulai",
 
   pictureIntro: `
-    <h2>Bagian 2: Gambar</h2>
+    <h2>Sesi 2: Deskripsi Gambar</h2>
     <p>Sekarang kamu akan melihat beberapa gambar. Untuk setiap gambar, dalam bahasa Belitung,
     deskripsikan apa yang kamu lihat, seperti apa yang sedang terjadi, benda apa yang kamu lihat,
     dsb. Deskripsikan gambar tersebut dengan beberapa kalimat singkat (paling lama 1.5 menit).</p>`,
@@ -72,14 +72,15 @@ window.CONTENT = {
     <p>Bagian terakhir adalah kuesioner singkat tentang latar belakang dan penggunaan bahasa.
     Tidak ada jawaban benar atau salah.</p>`,
 
-  monologueLabel: "Cerita {N} dari {TOTAL}",
-  monologueInstruction: "Dengarkan pertanyaannya, lalu jawablah dalam bahasa Belitung.",
+  monologueLabel: "{N} dari {TOTAL}",
+  monologueInstruction: "",   // none: the prompt is shown (or played) on its own
   pictureLabel: "Gambar {N} dari {TOTAL}",
   pictureInstruction: "Ceritakan dalam bahasa Belitong apa yang kamu lihat di gambar ini.",
 
   // ---------------------------------------------------------------
   // MONOLOGUE PROMPTS — identical for everyone, played in this order.
   //   audio: path to the recorded BM prompt, e.g. "stimuli/prompts/prompt_01.mp3".
+  //          It plays automatically when the screen opens (replay button before recording).
   //          While audio is null, the Belitung text (`text`) is shown instead.
   //   text_id: Indonesian version, for reference only (not shown).
   //   enabled: set false to drop a prompt.
@@ -123,6 +124,8 @@ window.CONTENT = {
     { value: 4, label: "4" },
     { value: 5, label: "5<br>Sangat setuju" },
   ],
+
+  questionnaireRequiredNote: "Pertanyaan bertanda <span class='req'>*</span> wajib diisi.",
 
   questionnaire: [
     {

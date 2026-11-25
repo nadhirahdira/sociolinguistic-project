@@ -92,6 +92,36 @@ window.Recorder = (() => {
 
   function cancel() { recording = false; levelCb = null; chunks = []; }
 
+  // Prompt playback through the same (already unlocked) audio context, so it
+  // can start automatically without another tap, including on iPhone.
+  const promptCache = new Map();
+  let promptSrc = null;
+  async function playPrompt(url) {
+    await init();
+    let buf = promptCache.get(url);
+    if (!buf) {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`Prompt audio not found (HTTP ${res.status})`);
+      const bytes = await res.arrayBuffer();
+      buf = await new Promise((ok, fail) => ctx.decodeAudioData(bytes, ok, fail));
+      promptCache.set(url, buf);
+    }
+    stopPrompt();
+    return new Promise((resolve) => {
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.onended = () => { if (promptSrc === src) promptSrc = null; resolve(); };
+      promptSrc = src;
+      src.start();
+    });
+  }
+  function stopPrompt() {
+    if (!promptSrc) return;
+    try { promptSrc.onended = null; promptSrc.stop(); } catch (e) { /* already stopped */ }
+    promptSrc = null;
+  }
+
   async function resample(data, fromRate, toRate) {
     if (fromRate === toRate || data.length === 0) return data;
     const len = Math.max(1, Math.round((data.length * toRate) / fromRate));
@@ -136,5 +166,5 @@ window.Recorder = (() => {
     };
   }
 
-  return { init, start, stop, cancel, info, isReady };
+  return { init, start, stop, cancel, info, isReady, playPrompt, stopPrompt };
 })();

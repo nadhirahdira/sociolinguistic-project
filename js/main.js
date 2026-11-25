@@ -11,6 +11,8 @@
   const rnd = crypto.getRandomValues(new Uint32Array(6));
   const CODE = (mode === "test" ? "T" : "P") + Array.from(rnd, (n) => ALPHABET[n % ALPHABET.length]).join("");
   const startedAt = new Date().toISOString();
+  // Test runs (?mode=test) may finish a recording at any time.
+  const minSeconds = (s) => (mode === "test" ? 0 : s);
 
   // ---------- device info ----------
   const ua = navigator.userAgent;
@@ -95,7 +97,7 @@
       label: CONTENT.monologueLabel.replace("{N}", i + 1).replace("{TOTAL}", prompts.length),
       instruction: CONTENT.monologueInstruction,
       prompt_audio: p.audio, prompt_text: p.text,
-      max_seconds: CONFIG.MONOLOGUE.max_seconds, min_seconds: CONFIG.MONOLOGUE.min_seconds,
+      max_seconds: CONFIG.MONOLOGUE.max_seconds, min_seconds: minSeconds(CONFIG.MONOLOGUE.min_seconds),
       filename, path: `${CODE}/${filename}`,
       data: { section: "monologue" },
     });
@@ -111,7 +113,7 @@
       label: CONTENT.pictureLabel.replace("{N}", i + 1).replace("{TOTAL}", CONTENT.pictures.length),
       instruction: CONTENT.pictureInstruction,
       image: p.src, image_alt: p.alt,
-      max_seconds: CONFIG.PICTURE.max_seconds, min_seconds: CONFIG.PICTURE.min_seconds,
+      max_seconds: CONFIG.PICTURE.max_seconds, min_seconds: minSeconds(CONFIG.PICTURE.min_seconds),
       filename, path: `${CODE}/${filename}`,
       data: { section: "picture" },
     });

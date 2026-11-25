@@ -57,8 +57,8 @@ window.CONTENT = {
     </ul>
     <h3>Bagian 1: Bercerita</h3>
     <p>Kamu akan mendengar beberapa pertanyaan dalam bahasa Belitung. Setelah setiap
-    pertanyaan, mulailah menjawab selama 2.5 menit dalam bahasa Belitong, seperti sedang
-    berbincang dengan teman dari Belitung. Rekaman akan berhenti secara otomatis setelah 2.5 menit.</p>`,
+    pertanyaan, mulailah menjawab selama 2–3 menit dalam bahasa Belitong, seperti sedang
+    berbincang dengan teman dari Belitung. Rekaman akan berhenti secara otomatis setelah 3 menit.</p>`,
   instructionsButton: "Saya mengerti, mulai",
 
   pictureIntro: `

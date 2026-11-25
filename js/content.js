@@ -1,48 +1,47 @@
 // =====================================================================
-// CONTENT — all text participants see, plus prompts, pictures and the
-// questionnaire. Edit this file to replace placeholders.
-//
-//   [DRAF]         = draft Indonesian written by Claude; please review.
-//   [PLACEHOLDER]  = must be replaced with your final material.
+// CONTENT — text participants see, plus prompts, pictures and the
+// questionnaire. Text reviewed by the researcher (v0.2).
 //
 // Answer VALUES (value: "...") are short English codes for analysis;
 // LABELS are what participants see. Change labels freely, but keep values
 // stable once data collection starts.
 // =====================================================================
 window.CONTENT = {
-  researcherContact: "[PLACEHOLDER: nama & kontak peneliti, mis. WhatsApp/email]",
+  researcherContact: "Nadhirah, nadhirah@kaist.ac.kr, 081927264717",
+
+  progressLabel: "Progress",
+  nextButton: "Selanjutnya",
 
   // ---------------------------------------------------------------
   welcome: `
-    <h1>Cerita tentang Kampung Halaman</h1>
-    <p>Terima kasih sudah bersedia membantu! Di sesi ini Anda akan bercerita tentang
-    kampung halaman, menjelaskan beberapa gambar, lalu mengisi kuesioner singkat.</p>
+    <h1>Studi Sosiolinguistik tentang Bahasa Belitong</h1>
+    <p>Terima kasih atas partisipasinya! Di sesi ini, kamu akan diminta untuk berbicara
+    mengenai beberapa topik pilihan, mendeskripsikan beberapa gambar, lalu mengisi kuesioner singkat.</p>
     <ul class="checklist">
-      <li><b>Waktu:</b> sekitar 30 menit, sekaligus tanpa jeda panjang.</li>
-      <li><b>Tempat:</b> ruangan yang tenang.</li>
-      <li><b>Perangkat:</b> HP lebih disarankan (mikrofon dekat mulut); laptop juga bisa.</li>
+      <li><b>Waktu:</b> 20-30 menit</li>
+      <li><b>Tempat:</b> Disarankan untuk berada di ruangan yang tenang.</li>
+      <li><b>Perangkat:</b> HP (disarankan), laptop</li>
       <li><b>Browser:</b> Chrome (Android/laptop) atau Safari (iPhone). Jangan dibuka di dalam aplikasi seperti Instagram atau LINE.</li>
     </ul>
     <p class="warn"><b>Penting:</b> jangan memuat ulang (refresh) atau menutup halaman ini
-    sampai selesai, dan jaga agar layar tetap menyala. Rekaman dikirim otomatis selama sesi berlangsung.</p>`,
+    sampai selesai, dan usahakan agar layar tetap menyala. Rekaman akan dikirim otomatis selama sesi berlangsung.</p>`,
+  inAppWarning: "Mohon salin tautan dan buka di Chrome atau Safari agar perekaman berjalan lancar.",
+  startButton: "Mulai",
 
   // ---------------------------------------------------------------
-  // [DRAF] Consent text — check course rules with your professor first.
   consent: `
     <h2>Informasi dan Persetujuan</h2>
-    <p><b>Tujuan.</b> Ini adalah proyek mata kuliah tentang bahasa Belitung dan pengalaman
-    merantau. [DRAF]</p>
-    <p><b>Apa yang Anda lakukan.</b> Merekam beberapa cerita singkat, menjelaskan gambar,
-    dan mengisi kuesioner (sekitar 30 menit).</p>
-    <p><b>Penyimpanan.</b> Rekaman disimpan di penyimpanan pribadi (Supabase) yang hanya bisa
-    dibuka oleh peneliti. Data hanya dipakai untuk proyek ini dan dihapus setelah penilaian
-    [PLACEHOLDER: atau tanggal tertentu].</p>
-    <p><b>Kerahasiaan.</b> Anda diberi kode, bukan nama. Nama Anda tidak akan muncul di laporan,
-    dan isi cerita pribadi Anda tidak akan dikutip. Mohon jangan menyebut nama lengkap siapa pun
-    saat merekam.</p>
-    <p><b>Hak mengundurkan diri.</b> Anda boleh berhenti kapan saja, termasuk setelah merekam.
-    Cukup hubungi peneliti dan sebutkan kode partisipan Anda: <b class="code">{CODE}</b>
-    (kode ini juga ditampilkan lagi di akhir sesi).</p>
+    <p><b>Tujuan.</b> Data ini akan digunakan untuk tugas di kelas HSS.20147 Introduction to
+    Sociolinguistics di KAIST.</p>
+    <p><b>Apa yang akan kamu lakukan.</b> Berbicara mengenai beberapa topik pilihan,
+    mendeskripsikan gambar, dan mengisi kuesioner (20-30 menit).</p>
+    <p><b>Penyimpanan.</b> Data hanya digunakan untuk proyek ini dan dihapus setelah penilaian
+    (31 Desember 2026).</p>
+    <p><b>Kerahasiaan.</b> Nama partisipan tidak akan muncul di laporan, dan rekaman percakapan
+    tidak akan dikutip. Mohon jangan menyebut nama lengkap siapa pun saat menjawab pertanyaan
+    yang diberikan.</p>
+    <p><b>Hak mengundurkan diri.</b> Partisipan boleh berhenti kapan saja, termasuk setelah sesi
+    selesai (ingin mengundurkan diri). Cukup hubungi kontak di bawah ini.</p>
     <p><b>Kontak.</b> {CONTACT}</p>`,
   consentCheckbox: "Saya sudah membaca informasi di atas dan bersedia ikut serta.",
 
@@ -50,69 +49,72 @@ window.CONTENT = {
   instructions: `
     <h2>Petunjuk</h2>
     <ul class="checklist">
-      <li>Pegang atau letakkan HP sekitar <b>20–30 cm dari mulut</b>.</li>
-      <li>Setiap jawaban direkam <b>satu kali</b> dan tidak bisa diulang. Kalau salah ucap, tidak apa-apa — lanjutkan saja.</li>
-      <li><b>Jangan menyebut nama lengkap</b> siapa pun.</li>
-      <li>Jangan memuat ulang atau menutup halaman. Jaga layar tetap menyala.</li>
+      <li>Usahakan untuk berbicara di dekat mikrofon.</li>
+      <li>Setiap jawaban direkam satu kali dan tidak bisa diulang. Jawaban tidak akan dinilai.
+      Jangan takut membuat kesalahan dan bicaralah secara natural.</li>
+      <li>Jangan menyebut nama lengkap siapa pun.</li>
+      <li>Jangan memuat ulang atau menutup halaman. Usahakan agar layar tetap menyala.</li>
     </ul>
     <h3>Bagian 1: Bercerita</h3>
-    <p>Anda akan mendengar beberapa pertanyaan dalam bahasa Belitung. Setelah setiap
-    pertanyaan, bercerita sekitar <b>2–3 menit dalam bahasa Belitung</b>, seperti sedang
-    ngobrol dengan teman dari kampung. Tombol <i>Selesai</i> aktif setelah 1,5 menit;
-    rekaman berhenti otomatis setelah 3 menit.</p>`,
+    <p>Kamu akan mendengar beberapa pertanyaan dalam bahasa Belitung. Setelah setiap
+    pertanyaan, mulailah menjawab selama 2.5 menit dalam bahasa Belitong, seperti sedang
+    berbincang dengan teman dari Belitung. Rekaman akan berhenti secara otomatis setelah 2.5 menit.</p>`,
+  instructionsButton: "Saya mengerti, mulai",
 
   pictureIntro: `
     <h2>Bagian 2: Gambar</h2>
-    <p>Sekarang Anda akan melihat beberapa gambar. Untuk setiap gambar, ceritakan
-    <b>dalam bahasa Belitung</b> apa yang Anda lihat — benda apa, apa yang sedang terjadi.
-    Cukup beberapa kalimat untuk setiap gambar (paling lama 1 menit).</p>`,
+    <p>Sekarang kamu akan melihat beberapa gambar. Untuk setiap gambar, dalam bahasa Belitung,
+    deskripsikan apa yang kamu lihat, seperti apa yang sedang terjadi, benda apa yang kamu lihat,
+    dsb. Deskripsikan gambar tersebut dengan beberapa kalimat singkat (paling lama 1.5 menit).</p>`,
 
   questionnaireIntro: `
     <h2>Bagian 3: Kuesioner</h2>
-    <p>Bagian terakhir adalah kuesioner singkat (sekitar 10 menit) tentang latar belakang
-    dan penggunaan bahasa Anda. Tidak ada jawaban benar atau salah.</p>`,
+    <p>Bagian terakhir adalah kuesioner singkat tentang latar belakang dan penggunaan bahasa.
+    Tidak ada jawaban benar atau salah.</p>`,
 
-  monologueInstruction: "Dengarkan pertanyaannya, lalu bercerita dalam bahasa Belitung.",
-  pictureInstruction: "Ceritakan dalam bahasa Belitung apa yang Anda lihat di gambar ini.",
+  monologueLabel: "Cerita {N} dari {TOTAL}",
+  monologueInstruction: "Dengarkan pertanyaannya, lalu jawablah dalam bahasa Belitung.",
+  pictureLabel: "Gambar {N} dari {TOTAL}",
+  pictureInstruction: "Ceritakan dalam bahasa Belitong apa yang kamu lihat di gambar ini.",
 
   // ---------------------------------------------------------------
   // MONOLOGUE PROMPTS — identical for everyone, played in this order.
   //   audio: path to the recorded BM prompt, e.g. "stimuli/prompts/prompt_01.mp3".
-  //          While audio is null, the placeholder text is shown instead.
-  //   enabled: set false to drop a prompt after the pilot.
-  // All 6 are enabled for the pilot.
+  //          While audio is null, the Belitung text (`text`) is shown instead.
+  //   text_id: Indonesian version, for reference only (not shown).
+  //   enabled: set false to drop a prompt.
   prompts: [
-    { id: "cook",   enabled: true, audio: null,
-      text: "[PLACEHOLDER] Jelaskan langkah demi langkah bagaimana memasak satu makanan khas Belitung." },
-    { id: "rain",   enabled: true, audio: null,
-      text: "[PLACEHOLDER] Waktu kecil, apa yang biasanya Anda lakukan di musim hujan?" },
-    { id: "beach",  enabled: true, audio: null,
-      text: "[PLACEHOLDER] Ceritakan satu hari di pantai di Belitung: apa yang Anda lihat dan lakukan." },
-    { id: "route",  enabled: true, audio: null,
-      text: "[PLACEHOLDER] Jelaskan jalan dari pusat kota ke satu tempat terkenal di Belitung, misalnya pasar." },
-    { id: "game",   enabled: true, audio: null,
-      text: "[PLACEHOLDER] Ajarkan satu permainan masa kecil Anda. Bagaimana aturannya?" },
-    { id: "school", enabled: true, audio: null,
-      text: "[PLACEHOLDER] Ceritakan satu hari biasa waktu SMA, dari pagi sampai sore." },
+    { id: "favorite_dish", enabled: true, audio: null,
+      text: "Cube ceriteek makanan nok nyaman menurut mikak. Ngape mikak rajin kan makanan itu? Sebile terakhir makan e? Isak ke nyuba masak e sendirik?",
+      text_id: "Ceritakan tentang salah satu makanan favoritmu, seperti alasan kamu menyukai makanan itu dan momen terakhir kamu makan masakan itu. Apa kamu pernah memasak makanan itu sendiri?" },
+    { id: "rainy_sunny", enabled: true, audio: null,
+      text: "Mikak lebe rajin mun pas ari ujan ape ari terik? Ngape? Mikak biase e ngape mun ari kitu?",
+      text_id: "Apakah kamu lebih menyukai hari di saat hujan turun atau hari di mana matahari bersinar terang? Mengapa? Apa yang biasanya kamu lakukan di hari-hari tersebut?" },
+    { id: "beach", enabled: true, audio: null,
+      text: "Cube ceriteek pengalamen mikak de pantai nok ade de Belitong. Sebile mikak kesitu? Pantai ape itu name e? Nok ape mikak gaween de situ? Mikak pegi e kan kawan ape kan keluarge?",
+      text_id: "Ceritakan satu hari saat kalian berada di salah satu pantai di Belitung. Kapan dan di mana pantai itu? Apa yang kamu lakukan di sana? Dengan siapa saja kamu pergi ke sana?" },
+    { id: "place_recommendation", enabled: true, audio: null,
+      text: "Tempat mane bang Belitong ne nok mikak nak kenalek kan urang-urang dari luar Belitong, selain pantai-pantai? Ape nok bagus e dari tempat itu? Sebile mikak terakhir kesitu? Mun mikak ke tempat itu pulak, ape nok nak mikak gaween de situ?",
+      text_id: "Ceritakan salah satu tempat di Belitung, selain pantai, yang kamu pasti akan rekomendasikan kepada pengunjung dari luar Belitung. Apa yang spesial dari tempat itu? Kapan terakhir kali kamu mengunjungi tempat itu? Jika kamu mengunjungi tempat itu lagi, apa yang ingin kamu lakukan di sana?" },
+    { id: "school_subject", enabled: true, audio: null,
+      text: "Pas tika SMA duluk e, pelajaren ape nok paling mikak rajinek? Ngape mikak rajin itu? Cube ceriteek ape sajak nok mikak ingat dari pelajaren itu. Mun pelajaren nok mikak ndak rajin e, ade ke? Ngape mikak nda rajin kan pelajaren itu?",
+      text_id: "Apa mata pelajaran favorit kalian semasa SMA? Ceritakan apapun berkaitan dengan mata pelajaran tersebut. Bagaimana dengan mata pelajaran yang paling kalian tidak senangi? Mengapa?" },
   ],
 
   // ---------------------------------------------------------------
-  // PICTURES — replace the files in stimuli/pictures/ (keep or change the
-  // names here). Real pictures must contain no written words and no
-  // identifiable faces. Note each image's license in stimuli/pictures/LICENSES.txt.
+  // PICTURES — replace the placeholder files in stimuli/pictures/.
+  // Real pictures must contain no written words and no identifiable faces.
+  // Note each image's license in stimuli/pictures/LICENSES.txt.
   pictures: [
-    { id: "rain_house",   src: "stimuli/pictures/01_rain_house.svg",   alt: "" },
-    { id: "rice",         src: "stimuli/pictures/02_rice.svg",         alt: "" },
-    { id: "clothesline",  src: "stimuli/pictures/03_clothesline.svg",  alt: "" },
-    { id: "chewing",      src: "stimuli/pictures/04_chewing.svg",      alt: "" },
-    { id: "angry",        src: "stimuli/pictures/05_angry.svg",        alt: "" },
-    { id: "sand",         src: "stimuli/pictures/06_sand.svg",         alt: "" },
-    { id: "cup_table",    src: "stimuli/pictures/07_cup_table.svg",    alt: "" },
-    { id: "objects_a",    src: "stimuli/pictures/08_objects.svg",      alt: "" },
+    { id: "sweet_bread",   src: "stimuli/pictures/01_sweet_bread.svg",   alt: "" },
+    { id: "green_dress",   src: "stimuli/pictures/02_green_dress.svg",   alt: "" },
+    { id: "school_fight",  src: "stimuli/pictures/03_school_fight.svg",  alt: "" },
+    { id: "beach",         src: "stimuli/pictures/04_beach.svg",         alt: "" },
+    { id: "seafood_meal",  src: "stimuli/pictures/05_seafood_meal.svg",  alt: "" },
   ],
 
   // ---------------------------------------------------------------
-  // [DRAF] QUESTIONNAIRE — one page per block.
+  // QUESTIONNAIRE — one page per block.
   // type: "radio" | "likert" | "checkbox" | "text" | "number"
   likert5: [
     { value: 1, label: "1<br>Sangat tidak setuju" },
@@ -137,7 +139,7 @@ window.CONTENT = {
           { value: "female", label: "Perempuan" },
           { value: "no_answer", label: "Tidak ingin menjawab" },
         ]},
-        { name: "a_district", type: "radio", label: "Kabupaten tempat Anda dibesarkan", required: true, options: [
+        { name: "a_district", type: "radio", label: "Kabupaten tempat dibesarkan", required: true, options: [
           { value: "belitung", label: "Belitung" },
           { value: "belitung_timur", label: "Belitung Timur" },
           { value: "other", label: "Lainnya" },
@@ -147,23 +149,23 @@ window.CONTENT = {
           { value: "town", label: "Kota" },
           { value: "village", label: "Desa / kampung" },
         ]},
-        { name: "a_study_place", type: "text", label: "Kota tempat Anda kuliah sekarang <span class='opt'>(kosongkan jika tidak berlaku)</span>", required: false },
-        { name: "a_years_outside", type: "number", label: "Sudah berapa tahun Anda tinggal di luar Belitung? <span class='opt'>(isi 0 jika tidak pernah)</span>", required: true, min: 0, max: 80, step: 0.5 },
+        { name: "a_study_place", type: "text", label: "Kota tempat kuliah/tinggal sekarang <span class='opt'>(kosongkan jika tidak berlaku)</span>", required: false },
+        { name: "a_years_outside", type: "number", label: "Sudah berapa tahun kamu tinggal di luar Belitung? <span class='opt'>(isi 0 jika tidak pernah)</span>", required: true, min: 0, max: 80, step: 0.5 },
       ],
     },
     {
       id: "B", title: "B. Rencana ke depan",
       questions: [
-        { name: "b_plan_after", type: "radio", label: "Setelah lulus, Anda berencana tinggal di mana?", required: true, options: [
+        { name: "b_plan_after", type: "radio", label: "Setelah lulus, di mana Anda berencana untuk tinggal?", required: true, options: [
           { value: "belitung", label: "Di Belitung" },
           { value: "outside", label: "Di luar Belitung" },
           { value: "undecided", label: "Belum tahu" },
         ]},
-        { name: "b_certainty", type: "radio", horizontal: true, label: "Seberapa yakin Anda dengan jawaban tadi?", required: true, options: [
+        { name: "b_certainty", type: "radio", horizontal: true, label: "Seberapa yakin Anda dengan jawaban sebelumnya?", required: true, options: [
           { value: 1, label: "1<br>Sama sekali tidak yakin" }, { value: 2, label: "2" }, { value: 3, label: "3" },
           { value: 4, label: "4" }, { value: 5, label: "5<br>Sangat yakin" },
         ]},
-        { name: "b_plan_longterm", type: "radio", label: "Dalam jangka panjang (10 tahun lagi atau lebih), Anda membayangkan tinggal di mana?", required: true, options: [
+        { name: "b_plan_longterm", type: "radio", label: "Dalam jangka panjang (10 tahun lagi atau lebih), di mana Anda membayangkan diri Anda menetap?", required: true, options: [
           { value: "belitung", label: "Di Belitung" },
           { value: "outside", label: "Di luar Belitung" },
           { value: "undecided", label: "Belum tahu" },
@@ -239,11 +241,11 @@ window.CONTENT = {
   finish: {
     title: "Terima kasih!",
     codeNote: "Ini kode partisipan Anda. Mohon simpan (misalnya dengan tangkapan layar) dan kirimkan ke peneliti.",
-    uploading: "Rekaman sedang dikirim… Mohon jangan tutup halaman ini dulu.",
+    uploading: "Rekaman sedang dikirim… Mohon jangan tinggalkan halaman ini.",
     done: "Semua rekaman dan jawaban sudah tersimpan. Anda boleh menutup halaman ini.",
     failed: "Beberapa file belum terkirim. Periksa koneksi internet, lalu tekan “Kirim ulang”.",
     retry: "Kirim ulang",
-    backupNote: "Kalau tetap gagal, unduh file di bawah ini dan kirimkan ke peneliti:",
+    backupNote: "Jika tetap gagal, unduh file di bawah ini dan kirimkan ke 081927264717 (Nadhirah) atau ke nadhirah@kaist.ac.kr",
     demo: "MODE DEMO: Supabase belum diatur, jadi tidak ada yang dikirim. File bisa diunduh di bawah.",
   },
 };

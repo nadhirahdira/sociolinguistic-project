@@ -43,7 +43,7 @@
   const jsPsych = initJsPsych({
     show_progress_bar: true,
     auto_update_progress_bar: true,
-    message_progress_bar: "Kemajuan",
+    message_progress_bar: CONTENT.progressLabel,
   });
 
   const timeline = [];
@@ -54,15 +54,15 @@
 
   // 1. Welcome
   timeline.push(btn(
-    CONTENT.welcome + (inAppBrowser ? `<p class="error">Sepertinya halaman ini dibuka di dalam aplikasi lain. Mohon salin tautan dan buka di Chrome atau Safari agar perekaman berjalan lancar.</p>` : ""),
-    "Mulai", { on_finish: beginSession }));
+    CONTENT.welcome + (inAppBrowser ? `<p class="error">${CONTENT.inAppWarning}</p>` : ""),
+    CONTENT.startButton, { on_finish: beginSession }));
 
   // 2. Consent (checkbox required by the browser form)
   timeline.push({
     type: jsPsychSurveyHtmlForm,
-    preamble: `<div class="panel">${CONTENT.consent.replace("{CODE}", CODE).replace("{CONTACT}", CONTENT.researcherContact)}</div>`,
+    preamble: `<div class="panel">${CONTENT.consent.replace("{CONTACT}", CONTENT.researcherContact)}</div>`,
     html: `<div class="panel"><label class="consent"><input type="checkbox" name="consent" value="yes" required> ${CONTENT.consentCheckbox}</label></div>`,
-    button_label: "Lanjut",
+    button_label: CONTENT.nextButton,
     data: { section: "consent" },
   });
 
@@ -82,7 +82,7 @@
   });
 
   // 4. Instructions
-  timeline.push(btn(CONTENT.instructions, "Saya mengerti, mulai"));
+  timeline.push(btn(CONTENT.instructions, CONTENT.instructionsButton));
 
   // 5. Monologues
   const prompts = CONTENT.prompts.filter((p) => p.enabled);
@@ -92,7 +92,7 @@
     timeline.push({
       type: RecordTrialPlugin,
       task: "mono", item_id: p.id, number: i + 1, total: prompts.length,
-      label: `Cerita ${i + 1} dari ${prompts.length}`,
+      label: CONTENT.monologueLabel.replace("{N}", i + 1).replace("{TOTAL}", prompts.length),
       instruction: CONTENT.monologueInstruction,
       prompt_audio: p.audio, prompt_text: p.text,
       max_seconds: CONFIG.MONOLOGUE.max_seconds, min_seconds: CONFIG.MONOLOGUE.min_seconds,
@@ -102,13 +102,13 @@
   });
 
   // 6. Pictures
-  timeline.push(btn(CONTENT.pictureIntro, "Lanjut"));
+  timeline.push(btn(CONTENT.pictureIntro, CONTENT.nextButton));
   CONTENT.pictures.forEach((p, i) => {
     const filename = `${CODE}_pic_${pad(i + 1)}.wav`;
     timeline.push({
       type: RecordTrialPlugin,
       task: "pic", item_id: p.id, number: i + 1, total: CONTENT.pictures.length,
-      label: `Gambar ${i + 1} dari ${CONTENT.pictures.length}`,
+      label: CONTENT.pictureLabel.replace("{N}", i + 1).replace("{TOTAL}", CONTENT.pictures.length),
       instruction: CONTENT.pictureInstruction,
       image: p.src, image_alt: p.alt,
       max_seconds: CONFIG.PICTURE.max_seconds, min_seconds: CONFIG.PICTURE.min_seconds,
@@ -118,13 +118,13 @@
   });
 
   // 7. Questionnaire
-  timeline.push(btn(CONTENT.questionnaireIntro, "Lanjut"));
+  timeline.push(btn(CONTENT.questionnaireIntro, CONTENT.nextButton));
   CONTENT.questionnaire.forEach((block) => {
     timeline.push({
       type: jsPsychSurveyHtmlForm,
       preamble: `<div class="panel"><h2>${block.title}</h2>${block.intro ? `<p>${block.intro}</p>` : ""}</div>`,
       html: `<div class="panel">${block.questions.map(renderQuestion).join("")}</div>`,
-      button_label: "Lanjut",
+      button_label: CONTENT.nextButton,
       data: { section: "questionnaire", block: block.id },
     });
   });

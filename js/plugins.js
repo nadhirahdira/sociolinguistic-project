@@ -76,7 +76,7 @@ class MicCheckPlugin {
         <div class="panel">
           <h2>Tes rekaman ${trial.seconds} detik</h2>
           <p>Letakkan HP sekitar 20–30 cm dari mulut. Tekan tombol di bawah, lalu ucapkan beberapa kalimat
-          dengan suara biasa, misalnya memperkenalkan hari ini sedang di mana.</p>
+          dengan suara biasa, misalnya memperkenalkan diri, hari ini sedang apa dan di mana (rekaman tidak akan disimpan).</p>
           <button class="jspsych-btn primary" id="mc-rec">● Mulai tes</button>
         </div>`;
       el.querySelector("#mc-rec").onclick = record;
@@ -88,7 +88,7 @@ class MicCheckPlugin {
         <div class="panel">
           <div class="rec"><span class="rec-dot"></span> Merekam… <span id="mc-t">${trial.seconds}</span></div>
           <div class="meter"><div id="mc-lvl"></div></div>
-          <p class="hint">Bicaralah sekarang. Garis hijau bergerak jika suara Anda terdengar.</p>
+          <p class="hint">Coba bicara sekarang. Garis hijau bergerak jika suara bisa terdengar.</p>
         </div>`;
       const meter = levelMeter(el.querySelector("#mc-lvl"));
       try {
@@ -120,7 +120,7 @@ class MicCheckPlugin {
           <h2>Dengarkan hasil tes</h2>
           ${quiet ? `<p class="warn">Suara terdengar sangat pelan atau tidak ada. Dekatkan HP ke mulut, pastikan mikrofon tidak tertutup, lalu ulangi tes.</p>` : ""}
           <audio controls src="${audioUrl}"></audio>
-          <p>Apakah suara Anda terdengar jelas?</p>
+          <p>Apakah suaramu bisa terdengar jelas?</p>
           <div class="btn-row">
             <button class="jspsych-btn" id="mc-redo">Ulangi tes</button>
             <button class="jspsych-btn primary" id="mc-ok">Ya, jelas — lanjut</button>

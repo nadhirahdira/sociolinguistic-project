@@ -1,3 +1,7 @@
 One line per picture: file name | source URL or "own drawing" | license | author
 
-01_rain_house.svg | placeholder | - | -
+01_sweet_bread    | placeholder | - | -
+02_green_dress    | placeholder | - | -
+03_school_fight   | placeholder | - | -
+04_beach          | placeholder | - | -
+05_seafood_meal   | placeholder | - | -

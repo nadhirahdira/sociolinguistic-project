@@ -15,11 +15,11 @@ window.CONFIG = {
   // 22050 Hz keeps the full speech range and keeps files small.
   SAMPLE_RATE: 22050,
 
-  MONOLOGUE: { max_seconds: 180, min_seconds: 90 },
-  PICTURE:   { max_seconds: 60,  min_seconds: 5 },
+  MONOLOGUE: { max_seconds: 150, min_seconds: 90 },
+  PICTURE:   { max_seconds: 90,  min_seconds: 5 },
   MIC_TEST_SECONDS: 5,
 
   // Bump this whenever prompts/pictures/questions change, so sessions
   // recorded with different materials can be told apart.
-  STUDY_VERSION: "0.1-placeholder",
+  STUDY_VERSION: "0.2-reviewed-text",
 };

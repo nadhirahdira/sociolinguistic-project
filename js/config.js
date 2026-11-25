@@ -10,6 +10,7 @@ window.CONFIG = {
 
   BUCKET: "recordings",
   TABLE: "sessions",
+  PAYOUT_TABLE: "payouts",   // GoPay numbers, kept apart from the research data
 
   // Audio is saved as mono 16-bit WAV at this sample rate.
   // 22050 Hz keeps the full speech range and keeps files small.
@@ -21,5 +22,5 @@ window.CONFIG = {
 
   // Bump this whenever prompts/pictures/questions change, so sessions
   // recorded with different materials can be told apart.
-  STUDY_VERSION: "0.9-fewer-questions",
+  STUDY_VERSION: "0.10-gopay",
 };

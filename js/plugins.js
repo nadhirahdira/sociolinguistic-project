@@ -339,6 +339,55 @@ class FinishPlugin {
     trial.save_summary();
     const files = () => Uploader.items.filter((i) => i.kind === "file");
 
+    const P = T.payout;
+    // Build the page once; uploads only refresh the status area, so the
+    // phone-number fields keep what the participant typed.
+    el.innerHTML = `
+      <div class="panel">
+        <h1>${T.title}</h1>
+        <div id="fp-status"></div>
+        <div id="fp-downloads"></div>
+      </div>
+      <div class="panel">
+        <h2>${P.title}</h2>
+        <p>${P.text}</p>
+        <form id="fp-payout" novalidate>
+          <label class="field-label" for="fp-phone">${P.phoneLabel}</label>
+          <input type="tel" id="fp-phone" inputmode="tel" autocomplete="tel" placeholder="${P.placeholder}">
+          <label class="field-label" for="fp-phone2">${P.confirmLabel}</label>
+          <input type="tel" id="fp-phone2" inputmode="tel" autocomplete="off" placeholder="${P.placeholder}">
+          <p id="fp-payout-msg" aria-live="polite"></p>
+          <button type="submit" class="jspsych-btn primary" id="fp-payout-btn">${P.button}</button>
+        </form>
+      </div>`;
+
+    // 0812-3456 789 / +62 812... / 62812... -> 08123456789
+    const normalize = (v) => {
+      let d = v.replace(/[\s.\-()]/g, "");
+      if (d.startsWith("+62")) d = "0" + d.slice(3);
+      else if (d.startsWith("62")) d = "0" + d.slice(2);
+      return d;
+    };
+    const form = el.querySelector("#fp-payout"), msg = el.querySelector("#fp-payout-msg"), btn = el.querySelector("#fp-payout-btn");
+    const say = (cls, text) => { msg.className = cls; msg.textContent = text; };
+    form.addEventListener("submit", async (ev) => {
+      ev.preventDefault();
+      const a = normalize(el.querySelector("#fp-phone").value), b = normalize(el.querySelector("#fp-phone2").value);
+      if (!/^08[0-9]{8,12}$/.test(a)) return say("error", P.invalid);
+      if (a !== b) return say("error", P.mismatch);
+      btn.disabled = true; btn.textContent = P.saving; say("", "");
+      try {
+        await Uploader.insertNow(CONFIG.PAYOUT_TABLE, { participant_code: trial.code, phone: a });
+        form.querySelectorAll("input").forEach((i) => (i.disabled = true));
+        btn.remove();
+        say("success", P.saved.replace("{PHONE}", a));
+      } catch (err) {
+        console.error(err);
+        btn.disabled = false; btn.textContent = P.button;
+        say("error", P.failed);
+      }
+    });
+
     const render = () => {
       const items = Uploader.items;
       const busy = Uploader.busy();
@@ -354,16 +403,12 @@ class FinishPlugin {
       const downloads = showDownloads
         ? `<p>${Uploader.enabled ? T.backupNote : ""}</p><ul class="downloads">${files().map((f) => {
             f.url = f.url || URL.createObjectURL(f.blob);
-            const ok = f.status === "done" ? " ✓" : "";
+            const ok = f.status === "done" ? " \u2713" : "";
             return `<li><a href="${f.url}" download="${f.path.split("/").pop()}">${f.path.split("/").pop()}</a>${ok}</li>`;
           }).join("")}</ul>` : "";
 
-      el.innerHTML = `
-        <div class="panel">
-          <h1>${T.title}</h1>
-          ${status}
-          ${downloads}
-        </div>`;
+      el.querySelector("#fp-status").innerHTML = status;
+      el.querySelector("#fp-downloads").innerHTML = downloads;
       const r = el.querySelector("#fp-retry");
       if (r) r.onclick = () => Uploader.retryFailed();
       if (!busy && !failed) window.onbeforeunload = null;

@@ -130,7 +130,8 @@ fieldset.question legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
 }
 .scale label:has(input:checked) { border-color: var(--accent); background: var(--purple-tint); }
 .scale input { width: 20px; height: 20px; margin: 0 0 4px; }
-input[type="text"], input[type="number"] {
+.field-label { display: block; font-weight: 600; margin: 12px 0 6px; }
+input[type="text"], input[type="number"], input[type="tel"] {
   width: 100%; box-sizing: border-box; font-size: 17px;
   padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px;
 }
@@ -139,3 +140,5 @@ input[type="text"], input[type="number"] {
 .code, .big-code { font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: .08em; }
 .big-code { font-size: 2em; font-weight: 700; text-align: center; padding: 12px; border: 2px dashed var(--purple); border-radius: 10px; background: var(--gold-tint); color: var(--purple-dark); }
 .downloads { padding-left: 1.2em; word-break: break-all; }
+#fp-payout .jspsych-btn { width: 100%; margin-top: 4px; }
+#fp-payout input:disabled { background: var(--purple-tint); color: var(--ink); }

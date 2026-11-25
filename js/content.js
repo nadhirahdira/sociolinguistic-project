@@ -246,5 +246,19 @@ window.CONTENT = {
     retry: "Kirim ulang",
     backupNote: "Jika tetap gagal, unduh file di bawah ini dan kirimkan ke 081927264717 (Nadhirah) atau ke nadhirah@kaist.ac.kr",
     demo: "MODE DEMO: Supabase belum diatur, jadi tidak ada yang dikirim. File bisa diunduh di bawah.",
+    // GoPay compensation (optional for the participant)
+    payout: {
+      title: "Kompensasi Rp25.000 (GoPay)",
+      text: "Masukkan nomor HP yang terdaftar di GoPay untuk menerima Rp25.000. Nomor ini hanya digunakan untuk mengirim kompensasi dan disimpan terpisah dari rekaman serta jawaban kuesioner.",
+      phoneLabel: "Nomor HP (GoPay)",
+      confirmLabel: "Ketik ulang nomor HP",
+      placeholder: "08xxxxxxxxxx",
+      button: "Simpan nomor",
+      saving: "Menyimpan\u2026",
+      invalid: "Nomor tidak valid. Gunakan format 08xxxxxxxxxx.",
+      mismatch: "Kedua nomor tidak sama. Periksa kembali.",
+      saved: "Nomor tersimpan. Kompensasi akan dikirim ke nomor {PHONE}. Terima kasih!",
+      failed: "Nomor belum tersimpan. Periksa koneksi internet, lalu coba lagi.",
+    },
   },
 };

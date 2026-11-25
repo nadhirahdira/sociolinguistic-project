@@ -77,6 +77,21 @@ window.Uploader = (() => {
     notify(); pump();
   }
 
+  // Insert one row into another table right away (not through the queue),
+  // e.g. the GoPay number, which is kept apart from the research data.
+  async function insertNow(table, row) {
+    if (!enabled) return;                           // demo mode: nothing is sent
+    let lastErr = null;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      const { error } = await client.from(table).insert(row);
+      if (!error) return;
+      lastErr = error;
+      console.warn(`Insert into ${table} failed (attempt ${attempt}):`, error);
+      await sleep(1500 * attempt);
+    }
+    throw lastErr;
+  }
+
   window.addEventListener("online", retryFailed);
 
   return {
@@ -84,6 +99,7 @@ window.Uploader = (() => {
     items,
     queueFile,
     queueRow,
+    insertNow,
     retryFailed,
     onChange: (fn) => listeners.push(fn),
     offChange: (fn) => { const i = listeners.indexOf(fn); if (i >= 0) listeners.splice(i, 1); },

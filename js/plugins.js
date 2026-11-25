@@ -183,8 +183,9 @@ class RecordTrialPlugin {
     };
 
     // --- prompt audio: plays automatically, with play/pause and a progress bar ---
-    // "Mulai merekam" appears once the prompt has been heard to the end.
-    // If the audio can't be loaded, the written prompt is used instead.
+    // "Mulai merekam" is available right away (the written prompt is on screen);
+    // starting to record stops the prompt audio. If the audio can't be loaded,
+    // the written prompt is used on its own.
     let player = null, raf = null;
     const tick = () => {
       if (!player) return;
@@ -222,7 +223,8 @@ class RecordTrialPlugin {
           <span class="player-time" id="pp-time">0:00 / ${fmtTime(player.duration)}</span>
         </div>
         <div id="rt-after"></div>`);
-      player.onended = () => { st.plays++; showStart(); };
+      player.onended = () => { st.plays++; };
+      showStart();
       el.querySelector("#pp-btn").onclick = () => {
         if (player.isPlaying()) { player.pause(); st.pauses++; } else player.play();
       };

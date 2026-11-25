@@ -85,7 +85,7 @@ p { margin: .6em 0; }
 .jspsych-btn.primary:hover:not(:disabled), #jspsych-survey-html-form-next:hover { background: var(--purple-dark); border-color: var(--purple-dark); }
 .jspsych-btn:disabled { opacity: .45; cursor: not-allowed; }
 #jspsych-html-button-response-btngroup, #jspsych-survey-html-form-next { display: block !important; width: 100%; max-width: none; }
-#jspsych-html-button-response-btngroup .jspsych-btn, #jspsych-survey-html-form-next, .panel > .jspsych-btn { width: 100%; }
+#jspsych-html-button-response-btngroup .jspsych-btn, #jspsych-survey-html-form-next, .panel > .jspsych-btn, #rt-controls > .jspsych-btn, #rt-after .jspsych-btn { width: 100%; }
 .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
 .btn-row .jspsych-btn { flex: 1 1 160px; }
 

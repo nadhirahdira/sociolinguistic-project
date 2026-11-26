@@ -120,6 +120,9 @@ window.CONTENT = {
 
   // ---------------------------------------------------------------
   // QUESTIONNAIRE — one page per block.
+  // hideFor: ["living_belitung"] = skipped for people who answer A1 "Tinggal di
+  // Belitung" (family, same-age stayers). On a question: that question is hidden.
+  // On a block: the whole page is skipped.
   // type: "radio" | "likert" | "checkbox" | "text" | "number"
   likert5: [
     { value: 1, label: "1<br>Sangat tidak setuju" },
@@ -151,12 +154,12 @@ window.CONTENT = {
           { value: "belitung_timur", label: "Belitung Timur" },
           { value: "other", label: "Lainnya" },
         ]},
-        { name: "a_study_place", type: "text", label: "Kota tempat kuliah/tinggal sekarang <span class='opt'>(kosongkan jika tidak berlaku)</span>", required: false },
-        { name: "a_years_outside", type: "number", label: "Sudah berapa tahun kamu tinggal di luar Belitung? <span class='opt'>(isi 0 jika tidak pernah)</span>", required: true, min: 0, max: 80, step: 0.5 },
+        { name: "a_study_place", hideFor: ["living_belitung"], type: "text", label: "Kota tempat kuliah/tinggal sekarang <span class='opt'>(kosongkan jika tidak berlaku)</span>", required: false },
+        { name: "a_years_outside", hideFor: ["living_belitung"], type: "number", label: "Sudah berapa tahun kamu tinggal di luar Belitung? <span class='opt'>(isi 0 jika tidak pernah)</span>", required: true, min: 0, max: 80, step: 0.5 },
       ],
     },
     {
-      id: "B", title: "B. Rencana ke depan",
+      id: "B", title: "B. Rencana ke depan", hideFor: ["living_belitung"],
       questions: [
         { name: "b_plan_after", type: "radio", label: "Setelah lulus, di mana Anda berencana untuk tinggal?", required: true, options: [
           { value: "belitung", label: "Di Belitung" },
@@ -219,14 +222,14 @@ window.CONTENT = {
           { value: "others", label: "Orang lain" },
           { value: "nobody", label: "Hampir tidak pernah dengan siapa pun" },
         ]},
-        { name: "d2_family_contact", type: "radio", label: "Seberapa sering Anda menelepon atau berkirim pesan dengan keluarga di Belitung?", required: true, options: [
+        { name: "d2_family_contact", hideFor: ["living_belitung"], type: "radio", label: "Seberapa sering Anda menelepon atau berkirim pesan dengan keluarga di Belitung?", required: true, options: [
           { value: "daily", label: "Setiap hari" },
           { value: "weekly", label: "Setiap minggu" },
           { value: "monthly", label: "Setiap bulan" },
           { value: "rarely", label: "Jarang" },
           { value: "na", label: "Tidak berlaku (saya tinggal di Belitung)" },
         ]},
-        { name: "d2_belitung_friends", type: "radio", label: "Apakah Anda punya teman dari Belitung di tempat Anda tinggal sekarang? Seberapa sering bertemu?", required: true, options: [
+        { name: "d2_belitung_friends", hideFor: ["living_belitung"], type: "radio", label: "Apakah Anda punya teman dari Belitung di tempat Anda tinggal sekarang? Seberapa sering bertemu?", required: true, options: [
           { value: "none", label: "Tidak punya" },
           { value: "daily", label: "Punya — bertemu hampir setiap hari" },
           { value: "weekly", label: "Punya — bertemu setiap minggu" },
@@ -234,7 +237,7 @@ window.CONTENT = {
           { value: "rarely", label: "Punya — jarang bertemu" },
           { value: "na", label: "Tidak berlaku (saya tinggal di Belitung)" },
         ]},
-        { name: "d2_visits_year", type: "number", label: "Berapa kali Anda pulang ke Belitung dalam setahun terakhir? <span class='opt'>(isi 0 jika tinggal di Belitung)</span>", required: true, min: 0, max: 100 },
+        { name: "d2_visits_year", hideFor: ["living_belitung"], type: "number", label: "Berapa kali Anda pulang ke Belitung dalam setahun terakhir? <span class='opt'>(isi 0 jika tinggal di Belitung)</span>", required: true, min: 0, max: 100 },
       ],
     },
   ],

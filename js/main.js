@@ -121,14 +121,49 @@
 
   // 7. Questionnaire
   timeline.push(btn(CONTENT.questionnaireIntro, CONTENT.nextButton));
+  // A1 answer ("Saat ini Anda") decides what people living in Belitung skip.
+  const statusAnswer = () => {
+    const t = jsPsych.data.get().filter({ section: "questionnaire", block: "A" }).values()[0];
+    return t && t.response ? t.response.a_status || null : null;
+  };
+  const hiddenFor = (item, status) => !!(item.hideFor && status && item.hideFor.includes(status));
+
+  // On page A itself, show/hide the "outside Belitung" questions as A1 changes.
+  // A hidden question is also disabled, so it is neither required nor saved.
+  function wireStatusToggle() {
+    const form = document.querySelector("#jspsych-survey-html-form");
+    const blockA = CONTENT.questionnaire.find((b) => b.id === "A");
+    const apply = () => {
+      const sel = form.querySelector('input[name="a_status"]:checked');
+      const status = sel ? sel.value : null;
+      blockA.questions.filter((q) => q.hideFor).forEach((q) => {
+        const fs = form.querySelector(`fieldset[data-q="${q.name}"]`);
+        if (!fs) return;
+        const hide = hiddenFor(q, status);
+        fs.hidden = hide;
+        fs.querySelectorAll("input").forEach((i) => (i.disabled = hide));
+      });
+    };
+    form.querySelectorAll('input[name="a_status"]').forEach((r) => r.addEventListener("change", apply));
+    apply();
+  }
+
   CONTENT.questionnaire.forEach((block) => {
-    timeline.push({
+    const page = {
       type: jsPsychSurveyHtmlForm,
       preamble: `<div class="panel"><h2>${block.title}</h2>${block.intro ? `<p>${block.intro}</p>` : ""}<p class="hint">${CONTENT.questionnaireRequiredNote}</p></div>`,
-      html: `<div class="panel">${block.questions.map(renderQuestion).join("")}</div>`,
+      // Built when the page opens, so later pages can drop questions based on A1.
+      html: () => {
+        const status = block.id === "A" ? null : statusAnswer();
+        return `<div class="panel">${block.questions.filter((q) => !hiddenFor(q, status)).map(renderQuestion).join("")}</div>`;
+      },
       button_label: CONTENT.nextButton,
       data: { section: "questionnaire", block: block.id },
-    });
+    };
+    if (block.id === "A") page.on_load = wireStatusToggle;
+    timeline.push(block.hideFor
+      ? { timeline: [page], conditional_function: () => !hiddenFor(block, statusAnswer()) }
+      : page);
   });
 
   // 8. Finish: save session summary, wait for uploads
@@ -158,7 +193,7 @@
     } else {
       field = `<input type="text" name="${q.name}" autocomplete="off" ${req}>`;
     }
-    return `<fieldset class="question"><legend>${q.label}${q.required ? ' <span class="req" aria-hidden="true">*</span>' : ""}</legend>${field}</fieldset>`;
+    return `<fieldset class="question" data-q="${q.name}"><legend>${q.label}${q.required ? ' <span class="req" aria-hidden="true">*</span>' : ""}</legend>${field}</fieldset>`;
   }
 
   function collectQuestionnaire() {

@@ -35,7 +35,7 @@ window.CONTENT = {
     Sociolinguistics di KAIST.</p>
     <p><b>Apa yang akan kamu lakukan.</b> Berbicara mengenai beberapa topik pilihan,
     mendeskripsikan gambar, dan mengisi kuesioner (20-30 menit).</p>
-    <p><b>Kompensasi.</b> Partisipan yang menyelesaikan sesi akan menerima Rp25.000 melalui GoPay.
+    <p><b>Kompensasi.</b> Partisipan yang menyelesaikan sesi akan menerima Rp30.000 melalui GoPay.
     Nomor HP diminta di halaman terakhir dan hanya digunakan untuk mengirim kompensasi.</p>
     <p><b>Penyimpanan.</b> Data hanya digunakan untuk proyek ini dan dihapus setelah penilaian
     (31 Desember 2026).</p>
@@ -65,6 +65,8 @@ window.CONTENT = {
 
   pictureIntro: `
     <h2>Sesi 2: Deskripsi Gambar</h2>
+    <p class="warn"><b>Penting:</b> jawab dalam <b>bahasa Belitong</b>, seperti waktu ngobrol
+    dengan keluarga atau kawan di Belitong. Usahakan tidak beralih ke bahasa Indonesia.</p>
     <p>Sekarang kamu akan melihat beberapa gambar. Untuk setiap gambar, dalam bahasa Belitung,
     deskripsikan apa yang kamu lihat, seperti apa yang sedang terjadi, benda apa yang kamu lihat,
     dsb. Deskripsikan gambar tersebut dengan beberapa kalimat singkat (paling lama 1.5 menit).</p>`,
@@ -78,6 +80,7 @@ window.CONTENT = {
   monologueInstruction: "",   // none: the prompt is shown (or played) on its own
   pictureLabel: "Gambar {N} dari {TOTAL}",
   pictureInstruction: "Nok ape nok mikak liat de gambar ini?",
+  pictureReminder: "<b>Ingat:</b> jawab dalam bahasa Belitong.",   // gold box at the top of each picture page
 
   // ---------------------------------------------------------------
   // MONOLOGUE PROMPTS — identical for everyone, played in this order.
@@ -253,8 +256,8 @@ window.CONTENT = {
     demo: "MODE DEMO: Supabase belum diatur, jadi tidak ada yang dikirim. File bisa diunduh di bawah.",
     // GoPay compensation (optional for the participant)
     payout: {
-      title: "Kompensasi Rp25.000 (GoPay)",
-      text: "Masukkan nomor HP yang terdaftar di GoPay untuk menerima Rp25.000. Nomor ini hanya digunakan untuk mengirim kompensasi dan disimpan terpisah dari rekaman serta jawaban kuesioner.",
+      title: "Kompensasi Rp30.000 (GoPay)",
+      text: "Masukkan nomor HP yang terdaftar di GoPay untuk menerima Rp30.000. Nomor ini hanya digunakan untuk mengirim kompensasi dan disimpan terpisah dari rekaman serta jawaban kuesioner.",
       phoneLabel: "Nomor HP (GoPay)",
       confirmLabel: "Ketik ulang nomor HP",
       placeholder: "08xxxxxxxxxx",

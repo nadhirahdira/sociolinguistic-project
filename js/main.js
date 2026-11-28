@@ -112,6 +112,7 @@
       task: "pic", item_id: p.id, number: i + 1, total: CONTENT.pictures.length,
       label: CONTENT.pictureLabel.replace("{N}", i + 1).replace("{TOTAL}", CONTENT.pictures.length),
       instruction: CONTENT.pictureInstruction,
+      notice: CONTENT.pictureReminder,
       image: p.src, image_alt: p.alt,
       max_seconds: CONFIG.PICTURE.max_seconds, min_seconds: minSeconds(CONFIG.PICTURE.min_seconds),
       filename, path: `${CODE}/${filename}`,

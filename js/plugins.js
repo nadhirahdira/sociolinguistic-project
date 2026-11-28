@@ -149,6 +149,7 @@ class RecordTrialPlugin {
       total: { type: PT.INT, default: 1 },
       label: { type: PT.HTML_STRING, default: "" },
       instruction: { type: PT.HTML_STRING, default: "" },
+      notice: { type: PT.HTML_STRING, default: "" },
       prompt_audio: { type: PT.STRING, default: null },
       prompt_text: { type: PT.HTML_STRING, default: null },
       image: { type: PT.STRING, default: null },
@@ -177,6 +178,7 @@ class RecordTrialPlugin {
       el.innerHTML = `
         <div class="panel task">
           <p class="task-label">${trial.label}</p>
+          ${trial.notice ? `<p class="warn">${trial.notice}</p>` : ""}
           ${trial.image ? `<img class="task-image" src="${trial.image}" alt="${trial.image_alt}">` : ""}
           <div id="rt-text">${showText() ? `<div class="prompt-text">${trial.prompt_text}</div>` : ""}</div>
           ${trial.instruction ? `<p class="task-instruction">${trial.instruction}</p>` : ""}

@@ -80,7 +80,7 @@ window.CONTENT = {
   monologueInstruction: "",   // none: the prompt is shown (or played) on its own
   pictureLabel: "Gambar {N} dari {TOTAL}",
   pictureInstruction: "Nok ape nok mikak liat de gambar ini?",
-  pictureReminder: "<b>Ingat:</b> jawab dalam bahasa Belitong.",   // gold box at the top of each picture page
+  pictureReminder: "<b>Jawab pakai bahase Belitong.</b>",   // gold box at the top of each picture page
 
   // ---------------------------------------------------------------
   // MONOLOGUE PROMPTS — identical for everyone, played in this order.

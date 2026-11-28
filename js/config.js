@@ -22,5 +22,5 @@ window.CONFIG = {
 
   // Bump this whenever prompts/pictures/questions change, so sessions
   // recorded with different materials can be told apart.
-  STUDY_VERSION: "0.13-30k-bm-reminder",
+  STUDY_VERSION: "0.14-reminder-text",
 };
